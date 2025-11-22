@@ -1,0 +1,6 @@
+{
+  "ruff.fix.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.ruff": true
+  }
+}
