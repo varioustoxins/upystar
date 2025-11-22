@@ -1,0 +1,36 @@
+repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.6.9
+    hooks:
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+      - id: ruff-format
+  - repo: local
+    hooks:
+      - id: ty
+        name: ty
+        entry: uv run ty .
+        language: system
+        pass_filenames: false
+        types: [python]
+      - id: pytest-fast
+        name: pytest (fast tests)
+        entry: uv run pytest -m "not slow"
+        language: system
+        pass_filenames: false
+        types: [python]
+      - id: pytest-all
+        name: pytest (all tests including slow)
+        entry: uv run pytest
+        language: system
+        pass_filenames: false
+        types: [python]
+        stages: [pre-push]
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: check-toml
+      - id: check-yaml
