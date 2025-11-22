@@ -5,7 +5,7 @@ build-backend = "maturin"
 [project]
 name = "upystar"
 version = "0.1.0"
-description = "High-performance Python library for parsing NEF files using USTAR Rust backend"
+description = "High-performance Python library for parsing NEF files using the uStar Rust star parser"
 authors = [
     {name = "Your Name", email = "your.email@example.com"},
 ]
