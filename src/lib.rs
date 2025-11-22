@@ -1,5 +1,5 @@
 use pyo3::prelude::*;
-use ustar_parser::{default_config, parse};
+use ustar::{default_config, parse};
 use std::fs;
 
 #[pyfunction]
