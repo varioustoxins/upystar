@@ -7,7 +7,7 @@ NEF (NMR Exchange Format) files with the performance of Rust and convenience of 
 
 __version__ = "0.1.0"
 
-from ._core import validate_star_string, validate_star_file
+from ._core import validate_star_file, validate_star_string  # ty: ignore unresolved-import
 
 __all__ = [
     "validate_star_string",
