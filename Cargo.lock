@@ -2118,7 +2118,7 @@ name = "upystar"
 version = "0.1.0"
 dependencies = [
  "pyo3",
- "ustar",
+ "ustar-parser",
 ]
 
 [[package]]
@@ -2134,8 +2134,10 @@ dependencies = [
 ]
 
 [[package]]
-name = "ustar"
-version = "0.1.0"
+name = "ustar-parser"
+version = "0.1.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "25f2600dfeeac97b2dab1bf1cd946a6ced9c46469b6bf82d79f2da453797ccb5"
 dependencies = [
  "clap",
  "flate2",

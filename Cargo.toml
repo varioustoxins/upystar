@@ -10,7 +10,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 pyo3 = { version = "0.22", features = ["extension-module"] }
-ustar = { path = "../ustar" }
+ustar-parser = "0.1.1"
 
 [features]
 default = []
