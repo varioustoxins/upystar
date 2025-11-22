@@ -57,9 +57,15 @@ def test_validate_star_file():
         temp_path = f.name
 
     try:
+        # Read the file to get actual length
+        with open(temp_path) as f:
+            actual_content = f.read()
+        file_length = len(actual_content)
+
         result = validate_star_file(temp_path)
-        assert f"Parsed file '{temp_path}' successfully: rule=star_file, span=0-" in result
-        assert "rule=star_file" in result
+        expected = f"Parsed file '{temp_path}' successfully: rule=star_file, span=0-{file_length}"
+        assert result == expected
+
     finally:
         os.unlink(temp_path)
 
