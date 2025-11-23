@@ -119,6 +119,40 @@ def test_validate_semicolon_text():
 )
 def test_comprehensive_star_examples(star_file):
     """Test validation of real STAR example files from ustar."""
+    import os
+
+    # Debug: List directory contents on Windows
+    if os.name == "nt":
+        print("\n=== Windows Debug Info ===")
+        print(f"Current working directory: {os.getcwd()}")
+        print(f"USTAR_STAR_ROOT: {USTAR_STAR_ROOT}")
+        print(f"USTAR_STAR_ROOT exists: {USTAR_STAR_ROOT.exists()}")
+
+        # List parent directories
+        current_dir = Path(".")
+        print(f"Contents of {current_dir.absolute()}:")
+        try:
+            for item in current_dir.iterdir():
+                print(f"  {item}")
+        except Exception as e:
+            print(f"  Error listing current dir: {e}")
+
+        parent_dir = Path("..")
+        print(f"Contents of {parent_dir.absolute()}:")
+        try:
+            for item in parent_dir.iterdir():
+                print(f"  {item}")
+        except Exception as e:
+            print(f"  Error listing parent dir: {e}")
+
+        parent_dir = Path("../../..")
+        print(f"Contents of {parent_dir.absolute()}:")
+        try:
+            for item in parent_dir.iterdir():
+                print(f"  {item}")
+        except Exception as e:
+            print(f"  Error listing parent dir: {e}")
+
     file_path = USTAR_STAR_ROOT / star_file
     if not file_path.exists():
         pytest.skip(f"Test data file {file_path} not found")
