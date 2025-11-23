@@ -40,6 +40,14 @@ jobs:
       run: uv python install ${{ matrix.python-version }}
     - name: Install Rust
       uses: dtolnay/rust-toolchain@stable
+    - name: Download ustar test data
+      run: |
+        if [ ! -d "../ustar/tests/test_data" ]; then
+          curl -L https://github.com/varioustoxins/ustar/archive/main.tar.gz | tar -xz
+          mkdir -p ../ustar/tests
+          mv ustar-main/tests/test_data ../ustar/tests/
+          rm -rf ustar-main
+        fi
     - name: Install dependencies
       run: uv sync --extra dev
     - name: Build extension
