@@ -53,7 +53,7 @@ def test_validate_star_file():
     """
 
     # Ensure Unix line endings for consistent parsing
-    star_content = star_content.replace("\r\n", "\n")
+    star_content = star_content.replace("\n", "\r\n")
 
     with tempfile.NamedTemporaryFile(mode="wb", suffix=".star", delete=False) as f:
         f.write(star_content.encode("utf-8"))
