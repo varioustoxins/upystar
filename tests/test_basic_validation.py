@@ -155,8 +155,6 @@ def test_comprehensive_star_examples(star_file):
             print(f"  Error listing parent dir: {e}")
 
     file_path = USTAR_STAR_ROOT / star_file
-    if not file_path.exists():
-        pytest.skip(f"Test data file {file_path} not found")
 
     result = validate_star_file(str(file_path))
     result = result.rstrip(f"{digits}- \n")
