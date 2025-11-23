@@ -52,9 +52,8 @@ def test_validate_star_file():
             _file_item "test value"
     """
 
-    # Convert to platform-appropriate line endings before writing if we are on windows
-    if os.name == "nt":  # Windows
-        star_content = star_content.replace("\n", "\r\n")
+    # Ensure Unix line endings for consistent parsing
+    star_content = star_content.replace("\r\n", "\n")
 
     with tempfile.NamedTemporaryFile(mode="w", suffix=".star", delete=False) as f:
         f.write(star_content)
@@ -69,6 +68,13 @@ def test_validate_star_file():
             print(f"temp_path: {temp_path}")
             print(f"temp_path type: {type(temp_path)}")
             print(f"file exists: {os.path.exists(temp_path)}")
+
+            # Read back the file content to verify what was actually written
+            with open(temp_path, "rb") as f:
+                file_bytes = f.read()
+            print(f"file size: {len(file_bytes)} bytes")
+            print(f"file content (hex): {file_bytes.hex()}")
+            print(f"file content (repr): {repr(file_bytes.decode('utf-8', errors='replace'))}")
 
         result = validate_star_file(temp_path)
         expected = f"Parsed file '{temp_path}' successfully: rule=star_file, span=0-{file_length}"
