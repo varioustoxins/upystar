@@ -5,9 +5,10 @@ import tempfile
 
 # from os import walk
 from pathlib import Path
+from string import digits
 
 # from textwrap import dedent
-# import pytest
+import pytest
 from upystar import validate_star_file  # , validate_star_string
 
 # Test data directory from ustar project
@@ -52,8 +53,9 @@ def test_validate_star_file():
             _file_item "test value"
     """
 
-    # Ensure Unix line endings for consistent parsing
-    star_content = star_content.replace("\n", "\r\n")
+    # Ensure Windows line endings on windows line endings for consistent testing
+    if os.name == "nt":  # Windows
+        star_content = star_content.replace("\n", "\r\n")
 
     with tempfile.NamedTemporaryFile(mode="wb", suffix=".star", delete=False) as f:
         f.write(star_content.encode("utf-8"))
@@ -61,14 +63,6 @@ def test_validate_star_file():
 
     try:
         file_length = len(star_content)
-
-        # Debug: Show exactly what's in the file
-        with open(temp_path, "rb") as f:
-            file_bytes = f.read()
-        print("\nCurrent version (binary mode):")
-        print(f"file size: {len(file_bytes)} bytes")
-        print(f"file content (hex): {file_bytes.hex()}")
-        print(f"file content (repr): {repr(file_bytes.decode('utf-8', errors='replace'))}")
 
         result = validate_star_file(temp_path)
         expected = f"Parsed file '{temp_path}' successfully: rule=star_file, span=0-{file_length}"
@@ -112,62 +106,62 @@ def test_validate_star_file():
 #     assert result == "Parsed successfully: rule=star_file, span=0-68"
 
 
-# # could do with a better selection of files here Sec5Part4 a dictionary a bmrb file a ciff file and anmmcif file
-# @pytest.mark.parametrize(
-#     "star_file",
-#     [
-#         "comprehensive_example_crlf.star",
-#         "comprehensive_example.star",
-#         "nef_spec/CCPN_Sec5Part3.nef",
-#         "cod_cif_files/cod_1556498.cif",
-#         "dicts/mmcif_pdbx_v5_next.dic",
-#         "pdb_mmcifs/2o65.cif",
-#     ],
-# )
-# def test_comprehensive_star_examples(star_file):
-#     """Test validation of real STAR example files from ustar."""
-#     import os
+# could do with a better selection of files here Sec5Part4 a dictionary a bmrb file a ciff file and anmmcif file
+@pytest.mark.parametrize(
+    "star_file",
+    [
+        "comprehensive_example_crlf.star",
+        "comprehensive_example.star",
+        "nef_spec/CCPN_Sec5Part3.nef",
+        "cod_cif_files/cod_1556498.cif",
+        "dicts/mmcif_pdbx_v5_next.dic",
+        "pdb_mmcifs/2o65.cif",
+    ],
+)
+def test_comprehensive_star_examples(star_file):
+    """Test validation of real STAR example files from ustar."""
+    import os
 
-#     # Debug: List directory contents on Windows
-#     if os.name == "nt":
-#         print("\n=== Windows Debug Info ===")
-#         print(f"Current working directory: {os.getcwd()}")
-#         print(f"USTAR_STAR_ROOT: {USTAR_STAR_ROOT}")
-#         print(f"USTAR_STAR_ROOT exists: {USTAR_STAR_ROOT.exists()}")
+    # Debug: List directory contents on Windows
+    if os.name == "nt":
+        print("\n=== Windows Debug Info ===")
+        print(f"Current working directory: {os.getcwd()}")
+        print(f"USTAR_STAR_ROOT: {USTAR_STAR_ROOT}")
+        print(f"USTAR_STAR_ROOT exists: {USTAR_STAR_ROOT.exists()}")
 
-#         # List parent directories
-#         current_dir = Path(".")
-#         print(f"Contents of {current_dir.absolute()}:")
-#         try:
-#             for item in current_dir.iterdir():
-#                 print(f"  {item}")
-#         except Exception as e:
-#             print(f"  Error listing current dir: {e}")
+        # List parent directories
+        current_dir = Path(".")
+        print(f"Contents of {current_dir.absolute()}:")
+        try:
+            for item in current_dir.iterdir():
+                print(f"  {item}")
+        except Exception as e:
+            print(f"  Error listing current dir: {e}")
 
-#         parent_dir = Path("..")
-#         print(f"Contents of {parent_dir.absolute()}:")
-#         try:
-#             for item in parent_dir.iterdir():
-#                 print(f"  {item}")
-#         except Exception as e:
-#             print(f"  Error listing parent dir: {e}")
+        parent_dir = Path("..")
+        print(f"Contents of {parent_dir.absolute()}:")
+        try:
+            for item in parent_dir.iterdir():
+                print(f"  {item}")
+        except Exception as e:
+            print(f"  Error listing parent dir: {e}")
 
-#         parent_dir = Path("../../..")
-#         print(f"Contents of {parent_dir.absolute()}:")
-#         try:
-#             for item in parent_dir.iterdir():
-#                 print(f"  {item}")
-#         except Exception as e:
-#             print(f"  Error listing parent dir: {e}")
+        parent_dir = Path("../../..")
+        print(f"Contents of {parent_dir.absolute()}:")
+        try:
+            for item in parent_dir.iterdir():
+                print(f"  {item}")
+        except Exception as e:
+            print(f"  Error listing parent dir: {e}")
 
-#     file_path = USTAR_STAR_ROOT / star_file
-#     if not file_path.exists():
-#         pytest.skip(f"Test data file {file_path} not found")
+    file_path = USTAR_STAR_ROOT / star_file
+    if not file_path.exists():
+        pytest.skip(f"Test data file {file_path} not found")
 
-#     result = validate_star_file(str(file_path))
-#     result = result.rstrip(f"{digits}- \n")
+    result = validate_star_file(str(file_path))
+    result = result.rstrip(f"{digits}- \n")
 
-#     assert result == f"Parsed file '{file_path}' successfully: rule=star_file, span="
+    assert result == f"Parsed file '{file_path}' successfully: rule=star_file, span="
 
 
 # @pytest.mark.slow
