@@ -53,15 +53,22 @@ def test_validate_star_file():
     """
 
     # Ensure Unix line endings for consistent parsing
-    if os.name == "nt":  # Windows
-        star_content = star_content.replace("\n", "\r\n")
+    star_content = star_content.replace("\r\n", "\n")
 
-    with tempfile.NamedTemporaryFile(mode="w", suffix=".star", delete=False, encoding="utf-8") as f:
-        f.write(star_content)
+    with tempfile.NamedTemporaryFile(mode="wb", suffix=".star", delete=False) as f:
+        f.write(star_content.encode("utf-8"))
         temp_path = f.name
 
     try:
         file_length = len(star_content)
+
+        # Debug: Show exactly what's in the file
+        with open(temp_path, "rb") as f:
+            file_bytes = f.read()
+        print("\nCurrent version (binary mode):")
+        print(f"file size: {len(file_bytes)} bytes")
+        print(f"file content (hex): {file_bytes.hex()}")
+        print(f"file content (repr): {repr(file_bytes.decode('utf-8', errors='replace'))}")
 
         result = validate_star_file(temp_path)
         expected = f"Parsed file '{temp_path}' successfully: rule=star_file, span=0-{file_length}"
