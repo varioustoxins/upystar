@@ -41,6 +41,7 @@ jobs:
     - name: Install Rust
       uses: dtolnay/rust-toolchain@stable
     - name: Download ustar test data
+      shell: bash
       run: |
         if [ ! -d "../ustar/tests/test_data" ]; then
           curl -L https://github.com/varioustoxins/ustar/archive/main.tar.gz | tar -xz
