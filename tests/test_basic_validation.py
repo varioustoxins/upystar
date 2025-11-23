@@ -52,15 +52,16 @@ def test_validate_star_file():
             _file_item "test value"
     """
 
+    # Convert to platform-appropriate line endings before writing if we are on windows
+    if os.name == "nt":  # Windows
+        star_content = star_content.replace("\n", "\r\n")
+
     with tempfile.NamedTemporaryFile(mode="w", suffix=".star", delete=False) as f:
         f.write(star_content)
         temp_path = f.name
 
     try:
-        # Read the file to get actual length
-        with open(temp_path) as f:
-            actual_content = f.read()
-        file_length = len(actual_content)
+        file_length = len(star_content)
 
         result = validate_star_file(temp_path)
         expected = f"Parsed file '{temp_path}' successfully: rule=star_file, span=0-{file_length}"
