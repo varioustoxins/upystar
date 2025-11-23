@@ -129,6 +129,24 @@ def test_comprehensive_star_examples(star_file):
         print(f"USTAR_STAR_ROOT: {USTAR_STAR_ROOT}")
         print(f"USTAR_STAR_ROOT exists: {USTAR_STAR_ROOT.exists()}")
 
+        # List mounted drives
+        import string
+
+        drives = []
+        for letter in string.ascii_uppercase:
+            if os.path.exists(f"{letter}:"):
+                drives.append(f"{letter}:")
+        print(f"Available drives: {drives}")
+
+        # List top level of each drive
+        for drive in drives:
+            print(f"Contents of {drive}\\:")
+            try:
+                for item in os.listdir(f"{drive}\\"):
+                    print(f"  {drive}\\{item}")
+            except Exception as e:
+                print(f"  Error listing {drive}: {e}")
+
         # List parent directories
         current_dir = Path(".")
         print(f"Contents of {current_dir.absolute()}:")
